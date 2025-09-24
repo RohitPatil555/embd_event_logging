@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag embd_event_log:$(git rev-parse --short=8 HEAD)
+      run: docker build . --file .devcontainer/Dockerfile --tag embd_event_log:$(git rev-parse --short=8 HEAD)
     - name: Execute CI
       run: docker run -v .:/workspaces embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/test_ci.sh
