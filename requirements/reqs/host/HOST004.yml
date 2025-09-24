@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  Transport Layer Flexibility
+level: 1.3
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  The host tool should be agnostic to the underlying transport; 
+  it may communicate over UART, USB CDC, I2C, UDP/TCP, etc., 
+  as long as the framing protocol is respected.

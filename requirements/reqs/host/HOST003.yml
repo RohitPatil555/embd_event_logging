@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  Response Structure
+level: 1.2
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  For every command received, the device must reply using the same framing format: 
+  <version> <msg_id> <payload_size> <payload>. 
+  The payload contains the requested data or status.

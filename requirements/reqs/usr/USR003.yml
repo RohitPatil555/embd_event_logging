@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  Compile‑Time Payload Size Configuration
+level: 1.2
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  Allow the maximum payload size per event to be set via a compile‑time macro 
+  or configuration file so that memory usage can be tailored to the target system.

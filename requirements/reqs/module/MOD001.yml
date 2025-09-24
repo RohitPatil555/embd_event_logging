@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  CTF‑2 Base Encoding Compliance
+level: 1.0
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  All event payloads must be encoded using the CTF‑2 base format 
+  before being written into packets.

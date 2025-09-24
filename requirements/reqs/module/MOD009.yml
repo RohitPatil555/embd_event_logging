@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  Packet Timeout & Failure Handling
+level: 1.8
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  Attach a timer to each packet in ReadyToSend state. 
+  If the host does not acknowledge receipt within the timeout period, 
+  the packet is dropped and the buffer returned to Empty, optionally logging an error.

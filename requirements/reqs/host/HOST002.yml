@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  Supported Message IDs
+level: 1.1
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  Implement two primary commands:
+    <br>- GET_PACKET – request current fill packet
+    <br>- CONFIG – update runtime parameters (e.g., event filter, packet timeout).

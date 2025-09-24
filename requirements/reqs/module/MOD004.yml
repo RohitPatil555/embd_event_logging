@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  Packet Payload Size Configuration
+level: 1.3
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  The maximum size of a packet’s payload is configurable at compile time via a macro 
+  (e.g., #define PACKET_PAYLOAD_SIZE 256).

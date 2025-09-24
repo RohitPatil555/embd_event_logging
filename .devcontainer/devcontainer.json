@@ -1,0 +1,32 @@
+{
+  "name": "C++ Development Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "LLVM_VERSION": "18.1.8",
+      "GTEST_VERSION": "1.15.2",
+      "CMAKE_VERSION": "3.27.5"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.associations": {
+          "*.cpp": "cpp",
+          "*.h": "cpp",
+          "*.cc": "cpp",
+          "*.cxx": "cpp",
+          "*.hpp": "cpp"
+        }
+      },
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools-extension-pack",
+        "che-dev.cpp-tools-pack"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}

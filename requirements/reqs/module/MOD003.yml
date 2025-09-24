@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  Compile‑Time Packet Configuration
+level: 1.2
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  The number of packet buffers available to the module 
+  must be set at compile time (e.g., #define NUM_PACKETS 4).

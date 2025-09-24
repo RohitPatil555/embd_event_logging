@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  Event‑Block Alignment Guarantee
+level: 1.4
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  At build time, the compiler must enforce that PACKET_PAYLOAD_SIZE is an integer 
+  multiple of the event block size to avoid partial writes.

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+BUILD_DIR=build
+
+# clean build directory
+rm -rf ${BUILD_DIR}
+mkdir ${BUILD_DIR}
+cd ${BUILD_DIR}
+
+# config space
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+
+# build cmake
+cmake --build . -- -j$(nproc)
+
+# build requirement
+cmake --build . --target req_docs
+
+# build docs
+# cmake --build . --target docs
+
+# Run test
+ctest --output-on-failure

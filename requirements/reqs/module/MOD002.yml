@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  Packet Payload Encapsulation
+level: 1.1
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  Each packet’s payload field contains one or more concatenated event blocks, 
+  each preceded by a fixed header as defined in CTF‑2.

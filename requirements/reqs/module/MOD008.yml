@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  Interface Provisioning API
+level: 1.7
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  Expose an initialization routine that accepts a callback or driver handle 
+  to the chosen transport layer (UART, USB, I2C, UDP/TCP, etc.) and 
+  uses it to send packets marked ReadyToSend.

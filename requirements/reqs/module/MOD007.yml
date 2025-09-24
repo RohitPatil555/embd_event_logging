@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  Event Drop Policy
+level: 1.6
+links: []
+normative: true
+ref: ''
+reviewed: null
+text: |
+  If all packets are in use (no Empty packet), 
+  new incoming events must be silently discarded to prevent overflow, 
+  and a counter should be incremented for diagnostics.
