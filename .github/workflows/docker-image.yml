@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file .devcontainer/Dockerfile --tag embd_event_log:$(git rev-parse --short=8 HEAD)
     - name: Execute CI
-      run: docker run -v ${{ github.workspace }}:/workspaces embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/test_ci.sh
+      run: docker run -v ${{ github.workspace }}:/workspaces/embd_event_logging embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/embd_event_logging/test_ci.sh
