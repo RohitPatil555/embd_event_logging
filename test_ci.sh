@@ -15,11 +15,8 @@ cmake /workspaces/embd_event_logging -DCMAKE_BUILD_TYPE=Debug
 # build cmake
 cmake --build . -- -j$(nproc)
 
-# build requirement
-cmake --build . --target req_docs
-
 # build docs
-# cmake --build . --target docs
+cmake --build . --target docs
 
 # Run test
 ctest --output-on-failure

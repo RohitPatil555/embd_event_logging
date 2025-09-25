@@ -1,0 +1,5 @@
+site_name: Embedded Event Logging
+use_directory_urls: true
+nav:
+  - Home: index.md
+  - Requirement: static-reqs\/index.html

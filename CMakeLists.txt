@@ -43,7 +43,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/auto_version.cmake)
 add_subdirectory(src)          # library
 add_subdirectory(tests)        # unit tests
 add_subdirectory(docs)         # MkDocs
-add_subdirectory(requirements)         # MkDocs
 
 # ------------------------------------------------------------
 # Install rules (optional)
