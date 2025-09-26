@@ -29,6 +29,6 @@ cmake --build . --target docs
 ctest --output-on-failure
 
 if [ "$COPY_ARTIFACTS" = "true" ]; then
-    cp -r /tmp/build/docs_output  /workspaces/artifacts/
+    sudo cp -r /tmp/build/docs_output  /workspaces/artifacts/
     echo "Copied Artifacts Done"
 fi

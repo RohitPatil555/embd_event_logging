@@ -26,6 +26,8 @@ jobs:
             -v ${{ github.workspace }}:/workspaces/embd_event_logging \
             -e GITHUB_ACTIONS=true \
             embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/embd_event_logging/test_ci.sh
+        sudo chmod -R 0777 artifacts/
+        sudo chown -R $USER:$GROUP artifacts/
 
     - name: Upload docs artifact
       uses: actions/upload-artifact@v4
