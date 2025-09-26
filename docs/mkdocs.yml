@@ -1,4 +1,7 @@
 site_name: Embedded Event Logging
+repo_url: https://github.com/RohitPatil555/embd_event_logging
+repo_name: 'GitHub'
+edit_uri: blob/main/docs/docs
 use_directory_urls: true
 theme:
   name: readthedocs
