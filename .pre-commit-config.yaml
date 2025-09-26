@@ -1,0 +1,28 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+-   repo: local
+    hooks:
+    -   id: clang-format
+        name: clang-format
+        entry: clang-format -i
+        language: system
+        types_or: [c++]
+        args: ["--style=.githook/clang_cpp.format"]
+    -   id: check-commit-msg
+        name: commit message validation
+        entry: ./.githook/commit-msg
+        language: system
+        stages: [commit-msg]
+    -   id: install-commit-template
+        name: Install Commit Template
+        entry: bash -c 'git config commit.template .github/commit-template.txt'
+        language: system
+        stages: [manual]

@@ -1,0 +1,25 @@
+#!/bin/sh
+commit_msg_file=$1
+commit_msg=$(cat "$commit_msg_file")
+
+regex_title="^Title: .+"
+regex_type="^Type: (CI|git|Test|Code|Docs|Req|Example)$"
+regex_detail="^Detail:"
+
+# Check Title
+echo "$commit_msg" | grep -qE "$regex_title" || {
+  echo "❌ Commit message missing or invalid Title" >&2
+  exit 1
+}
+
+# Check Type
+echo "$commit_msg" | grep -qE "$regex_type" || {
+  echo "❌ Commit message missing or invalid Type (must be one of CI|Test|Code|Docs|Req|Example)" >&2
+  exit 1
+}
+
+# Check Detail
+echo "$commit_msg" | grep -qE "$regex_detail" || {
+  echo "❌ Commit message missing Detail section" >&2
+  exit 1
+}

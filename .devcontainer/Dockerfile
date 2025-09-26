@@ -13,7 +13,7 @@ RUN apt-get update && \
     zlib1g-dev libedit-dev libxml2-dev libncurses5-dev libtinfo-dev \
     libssl-dev pkg-config lcov software-properties-common \
     gcc-arm-none-eabi gdb-multiarch qemu-system-arm \
-    clang \
+    clang clang-format clang-tidy clang-tools \
     lld \
     libgtest-dev \
     libgmock-dev \
@@ -24,7 +24,7 @@ RUN apt-get update && \
 # Python tools: MkDocs, Doorstop, auto-versioning, coverage
 # --------------------------------------------------------------------
 RUN pip install --no-cache-dir --break-system-packages \
-        mkdocs mkdocs-material doorstop gcovr
+        mkdocs mkdocs-material doorstop gcovr pre-commit
 
 # Set default user and workspace
 USER vscode
