@@ -19,13 +19,17 @@ jobs:
       run: docker build . --file .devcontainer/Dockerfile --tag embd_event_log:$(git rev-parse --short=8 HEAD)
 
     - name: Execute CI
-      run: docker run -v ${{ github.workspace }}:/workspaces/embd_event_logging embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/embd_event_logging/test_ci.sh
+      run: |
+        mkdir -p artifacts
+        docker run --rm -v $PWD/artifacts:/workspaces/artifacts \
+            -v ${{ github.workspace }}:/workspaces/embd_event_logging \
+            embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/embd_event_logging/test_ci.sh
 
     - name: Upload docs artifact
       uses: actions/upload-artifact@v4
       with:
         name: site
-        path: /tmp/build/docs_output/
+        path: artifacts/docs_output/
 
   deploy:
     needs: build

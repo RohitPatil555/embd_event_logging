@@ -2,7 +2,14 @@
 
 set -e
 
-BUILD_DIR=/tmp/build
+BUILD_DIR=build
+COPY_ARTIFACTS=false
+
+
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    BUILD_DIR=/tmp/build
+    COPY_ARTIFACTS=true
+fi
 
 # clean build directory
 rm -rf ${BUILD_DIR}
@@ -20,3 +27,8 @@ cmake --build . --target docs
 
 # Run test
 ctest --output-on-failure
+
+if [ "$COPY_ARTIFACTS" = "true" ]; then
+    cp -r /tmp/build/docs_output  /workspaces/artifacts/
+    echo "Copied Artifacts Done"
+fi

@@ -3,7 +3,8 @@ commit_msg_file=$1
 commit_msg=$(cat "$commit_msg_file")
 
 regex_title="^Title: .+"
-regex_type="^Type: (CI|git|Test|Code|Docs|Req|Example)$"
+regex_type="^Type: (Feature|Fix)$"
+regex_comp="^Component: (CI|git|Test|Code|Docs|Req|Example)$"
 regex_detail="^Detail:"
 
 # Check Title
@@ -12,9 +13,15 @@ echo "$commit_msg" | grep -qE "$regex_title" || {
   exit 1
 }
 
-# Check Type
+# Check Component
 echo "$commit_msg" | grep -qE "$regex_type" || {
-  echo "❌ Commit message missing or invalid Type (must be one of CI|Test|Code|Docs|Req|Example)" >&2
+  echo "❌ Commit message missing or invalid Type (must be one of Feature|Fix)" >&2
+  exit 1
+}
+
+# Check Component
+echo "$commit_msg" | grep -qE "$regex_comp" || {
+  echo "❌ Commit message missing or invalid Component (must be one of CI|Test|Code|Docs|Req|Example)" >&2
   exit 1
 }
 

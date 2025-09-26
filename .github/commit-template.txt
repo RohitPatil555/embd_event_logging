@@ -1,5 +1,6 @@
 Title: <string as subject>
-Type: <CI | git | Test | Code | Docs | Req | Example>
+Type: <Feature|Fix>
+Component: <CI | git | Test | Code | Docs | Req | Example>
 Detail:
     - <bullet point 1>
     - <bullet point 2>
