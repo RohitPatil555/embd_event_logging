@@ -14,7 +14,42 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Build the Docker image
       run: docker build . --file .devcontainer/Dockerfile --tag embd_event_log:$(git rev-parse --short=8 HEAD)
+
     - name: Execute CI
       run: docker run -v ${{ github.workspace }}:/workspaces/embd_event_logging embd_event_log:$(git rev-parse --short=8 HEAD) /workspaces/embd_event_logging/test_ci.sh
+
+    - name: Upload docs artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: site
+        path: /tmp/build/docs_output/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permission:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+        
+      - name: Setup pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        
