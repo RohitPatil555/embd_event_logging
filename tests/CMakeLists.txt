@@ -14,7 +14,7 @@ function(collect_gtest_names OUT_VAR)
             COMMAND awk "/TEST(_F|_P)?\\(/ {
                             split($0, a, /[,|(|)]/);
                             gsub(/ /,\"\",a[3]);
-                            print a[2] \"::\" a[3];
+                            print a[2] \".\" a[3];
                         }"
                         ${src}
             OUTPUT_VARIABLE TEST_NAMES_RAW
@@ -35,6 +35,7 @@ endfunction()
 find_package(GTest REQUIRED)          # gtest/gmock via vcpkg, Conan or system
 
 add_executable(tests main.cpp)
+target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../tmpl)
 target_link_libraries(tests PRIVATE embdEventLog GTest::gtest GTest::gmock)
 
 # Add coverage if enabled
@@ -47,7 +48,10 @@ if(SANITIZERS)
 endif()
 
 # Set additional sources for test
-set(TESTS_SRCS basic.cpp)
+set(TESTS_SRCS basic.cpp
+    packetPool.cpp
+)
+
 target_sources(tests PRIVATE ${TESTS_SRCS})
 collect_gtest_names(TEST_LIST ${TESTS_SRCS})
 
