@@ -6,4 +6,3 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(embdEventLog_fuzz PRIVATE -fsanitize=fuzzer-no-link,address,undefined)
     target_link_options(embdEventLog_fuzz PRIVATE -fsanitize=fuzzer-no-link,address,undefined)
 endif()
-

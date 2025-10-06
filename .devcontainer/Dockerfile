@@ -15,6 +15,7 @@ RUN apt-get update && \
     gcc-arm-none-eabi gdb-multiarch qemu-system-arm \
     clang clang-format clang-tidy clang-tools \
     lld \
+    graphviz \
     libgtest-dev \
     libgmock-dev \
     cmake \

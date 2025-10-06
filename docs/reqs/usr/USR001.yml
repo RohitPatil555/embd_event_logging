@@ -8,6 +8,6 @@ normative: true
 ref: ''
 reviewed: null
 text: |
-  Provide a simple syntax (e.g., macros or inline structs) 
-  that lets developers declare event types and payloads 
+  Provide a simple syntax (e.g., macros or inline structs)
+  that lets developers declare event types and payloads
   with minimal boilerplate.

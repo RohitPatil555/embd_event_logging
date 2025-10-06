@@ -8,5 +8,5 @@ normative: true
 ref: ''
 reviewed: null
 text: |
-  The number of packet buffers available to the module 
+  The number of packet buffers available to the module
   must be set at compile time (e.g., #define NUM_PACKETS 4).

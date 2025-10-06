@@ -2,6 +2,7 @@
 
 set -e
 
+EXEC_DIR=$PWD
 BUILD_DIR=build
 COPY_ARTIFACTS=false
 
@@ -26,9 +27,13 @@ cmake --build . -- -j$(nproc)
 cmake --build . --target docs
 
 # Run test
+cd tests/
 ctest --output-on-failure
+cd -
 
 if [ "$COPY_ARTIFACTS" = "true" ]; then
     sudo cp -r /tmp/build/docs_output  /workspaces/artifacts/
     echo "Copied Artifacts Done"
 fi
+
+cd $EXEC_DIR

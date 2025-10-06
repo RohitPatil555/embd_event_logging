@@ -40,7 +40,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/auto_version.cmake)
 # ------------------------------------------------------------
 # Sub‑projects
 # ------------------------------------------------------------
-add_subdirectory(src)          # library
+add_subdirectory(lib)          # library
 add_subdirectory(tests)        # unit tests
 add_subdirectory(docs)         # MkDocs
 
@@ -48,4 +48,3 @@ add_subdirectory(docs)         # MkDocs
 # Install rules (optional)
 # ------------------------------------------------------------
 #install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-

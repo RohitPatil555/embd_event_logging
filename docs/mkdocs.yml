@@ -2,7 +2,7 @@ site_name: Embedded Event Logging
 repo_url: https://github.com/RohitPatil555/embd_event_logging
 repo_name: 'GitHub'
 edit_uri: blob/main/docs/docs
-use_directory_urls: true
+use_directory_urls: false
 theme:
   name: readthedocs
   highlightjs: true
@@ -11,4 +11,8 @@ theme:
     - c++
 nav:
   - Home: index.md
-  - Requirement: static-reqs\/index.html
+  - Internal:
+    - Intro: internal/index.md
+    - Host To Device Interface: internal/host_to_device_interface.md
+  - Other:
+    - Requirement: static-reqs\/index.html

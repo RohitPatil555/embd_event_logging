@@ -8,5 +8,5 @@ normative: true
 ref: ''
 reviewed: null
 text: |
-  The maximum size of a packet’s payload is configurable at compile time via a macro 
+  The maximum size of a packet’s payload is configurable at compile time via a macro
   (e.g., #define PACKET_PAYLOAD_SIZE 256).

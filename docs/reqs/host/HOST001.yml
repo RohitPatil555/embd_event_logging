@@ -8,5 +8,5 @@ normative: true
 ref: ''
 reviewed: null
 text: |
-  Define a simple framing format for host ↔ device communication: 
-  <version> <msg_id> <payload_size> <payload>. All messages must follow this layout.
+  Define a simple framing format for host ↔ device communication:
+  All messages must follow below layout

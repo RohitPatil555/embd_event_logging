@@ -14,11 +14,11 @@ repos:
         name: clang-format
         entry: clang-format -i
         language: system
-        types_or: [c++]
-        args: ["--style=.githook/clang_cpp.format"]
+        types_or: [c, c++]
+        args: ["--style=file:.githooks/clang_cpp.format"]
     -   id: check-commit-msg
         name: commit message validation
-        entry: ./.githook/commit-msg
+        entry: ./.githooks/commit-msg
         language: system
         stages: [commit-msg]
     -   id: install-commit-template

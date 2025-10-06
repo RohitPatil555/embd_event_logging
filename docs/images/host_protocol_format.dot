@@ -1,0 +1,9 @@
+digraph evt_log_cmd {
+    node [shape=record, fontname=Courier, fontsize=12];
+
+    evt_log_cmd [
+        label="{
+            { Version (8) | Command (8) | Reserved (16) } | { Payload Len (32) } | { Payload (payload_len) }
+        }"
+    ];
+}
