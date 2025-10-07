@@ -12,7 +12,7 @@ if(SANITIZERS)
 endif()
 
 set(EMBD_EVENT_LOG_SORUCES
-        temp.cpp
+        eventCollector.cpp
 )
 
 target_sources(embdEventLog PRIVATE ${EMBD_EVENT_LOG_SORUCES})
