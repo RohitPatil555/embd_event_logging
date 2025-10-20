@@ -1,4 +1,0 @@
-#pragma once
-
-#define CONFIG_MAX_PACKET_SIZE         @MAX_PACKET_SIZE@
-#define CONFIG_MAX_PACKET_INSTANCE     @MAX_PACKET_INSTANCE@

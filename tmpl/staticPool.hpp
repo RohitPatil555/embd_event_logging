@@ -10,14 +10,14 @@
 template <typename T, std::size_t N>
 	requires( !std::is_polymorphic_v<T> )
 class StaticPool {
-	public:
+public:
 	StaticPool();
 	T *allocate() noexcept;
 	void release( T *ptr ) noexcept;
 	std::size_t usedCount() noexcept;
 
-	private:
-	std::array<T, N> pool{};
+private:
+	std::array<T, N> pool;
 	std::bitset<N> used{};
 };
 
