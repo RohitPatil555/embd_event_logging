@@ -51,6 +51,7 @@ endif()
 set(TESTS_SRCS basic.cpp
     packetPool.cpp
     packetOp.cpp
+    eventCollectorTest.cpp
 )
 
 target_sources(tests PRIVATE ${TESTS_SRCS})

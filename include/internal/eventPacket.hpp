@@ -25,8 +25,10 @@ class eventPacket {
 	packet_buffer_t buffer;
 
 public:
-	eventPacket( uint32_t streamId, uint32_t seqNo );
+	eventPacket() = default;
 	~eventPacket();
+
+	void init( uint32_t streamId, uint32_t seqNo );
 
 	bool isPacketFull();
 	bool addEvent( EventIntf *eventPtr );
@@ -36,3 +38,5 @@ public:
 
 	void buildPacket();
 };
+
+typedef eventPacket *eventPacket_ptr_t;

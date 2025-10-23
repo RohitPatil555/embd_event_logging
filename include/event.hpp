@@ -39,3 +39,14 @@ public:
 		return std::as_bytes( std::span<EventPayload>( &evtPayload, 1 ) );
 	}
 };
+
+// Define time spacific concept for event
+template <typename U> struct is_event_t : std::false_type {};
+
+// Define time spacific concept for event
+template <typename T> struct is_event_t<Event<T>> : std::true_type {};
+
+template <typename U> inline constexpr bool is_event_v = is_event_t<U>::value;
+
+template <typename U>
+concept IsEventType = is_event_v<U>;

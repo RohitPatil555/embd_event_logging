@@ -66,6 +66,7 @@
         "*.in": "cpp",
         "bitset": "cpp",
         "cstring": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "cassert": "cpp"
     }
 }

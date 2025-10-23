@@ -3,16 +3,16 @@
 
 using namespace std;
 
-eventPacket::eventPacket( uint32_t streamId, uint32_t seqNo ) {
+eventPacket::~eventPacket() { memset( &buffer, 0, sizeof( buffer ) ); }
+
+void eventPacket::init( uint32_t streamId, uint32_t seqNo ) {
 	currOffset = 0;
 	eventCount = 0;
-	memset( &buffer, 0, sizeof( buffer ) );
 
+	memset( &buffer, 0, sizeof( buffer ) );
 	buffer.stream_id		= streamId;
 	buffer.packet_seq_count = seqNo;
 }
-
-eventPacket::~eventPacket() { memset( &buffer, 0, sizeof( buffer ) ); }
 
 bool eventPacket::isPacketFull() {
 	if ( eventCount < CONFIG_EVENT_MAX_PER_PACKET ) {

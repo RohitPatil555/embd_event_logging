@@ -24,9 +24,10 @@ protected:
 };
 
 TEST_F( EventPacketTest, Initialization ) {
-	eventPacket packet( TEST_STREAM_ID, TEST_SEQ_NO );
+	eventPacket packet;
 	const packet_buffer_t *pktBuf = nullptr;
 
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
 	packet.buildPacket();
 
 	auto raw = packet.getPacketInRaw();
@@ -41,9 +42,11 @@ TEST_F( EventPacketTest, Initialization ) {
 }
 
 TEST_F( EventPacketTest, CapacityManagement ) {
-	eventPacket packet( TEST_STREAM_ID, TEST_SEQ_NO );
+	eventPacket packet;
 	const packet_buffer_t *pktBuf = nullptr;
 	MockEvent mevt( TEST_EVENT_MAX_SIZE, 0x11 );
+
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
 
 	// Push event till packet is full.
 	while ( !packet.isPacketFull() ) {
@@ -65,11 +68,13 @@ TEST_F( EventPacketTest, CapacityManagement ) {
 
 
 TEST_F( EventPacketTest, PaddingValidation ) {
-	eventPacket packet( TEST_STREAM_ID, TEST_SEQ_NO );
+	eventPacket packet;
 	const packet_buffer_t *pktBuf = nullptr;
 	MockEvent mevt( TEST_EVENT_PADDING_SIZE_1, 0x22 );
 	const uint32_t padSize =
 		( TEST_EVENT_MAX_SIZE - TEST_EVENT_PADDING_SIZE_1 ) * CONFIG_EVENT_MAX_PER_PACKET;
+
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
 
 	// Push event till packet is full.
 	while ( !packet.isPacketFull() ) {
@@ -90,10 +95,12 @@ TEST_F( EventPacketTest, PaddingValidation ) {
 }
 
 TEST_F( EventPacketTest, DropEventValidation ) {
-	eventPacket packet( TEST_STREAM_ID, TEST_SEQ_NO );
+	eventPacket packet;
 	const packet_buffer_t *pktBuf = nullptr;
 
-	for ( int i = 0; i < TEST_EVENT_DROP_COUNT; i++ ) {
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
+
+	for ( uint32_t i = 0; i < TEST_EVENT_DROP_COUNT; i++ ) {
 		packet.dropEvent();
 	}
 
