@@ -9,11 +9,37 @@ typedef struct {
 	array<std::byte, 10> value;
 } __attribute__( ( packed ) ) mock_event_t;
 
+template <> struct EventId<mock_event_t> {
+	static constexpr uint32_t value = 1;
+};
+
+class TestPlatform : public eventPlatform {
+	uint64_t ts;
+
+public:
+	TestPlatform() { ts = 0; }
+
+	uint64_t getTimestamp() {
+		ts += 100;
+		return ts;
+	}
+
+	void eventLock() {}
+	void eventUnlock() {}
+};
+
+static TestPlatform g_TestPltf;
+
 // Test: Verify singleton instance
 TEST( EventCollectorTest, SingletonInstance ) {
 	auto *inst1 = eventCollector::getInstance();
 	auto *inst2 = eventCollector::getInstance();
 	EXPECT_EQ( inst1, inst2 );
+
+	// TODO: need to see what to do for UT
+	auto *inst3 = eventCollector::getInstance();
+	inst3->setStreamId( 0 );
+	inst3->setPlatformIntf( &g_TestPltf );
 }
 
 // Test: Push events and send first packet

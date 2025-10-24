@@ -12,12 +12,21 @@
 
 class eventPacket;
 
+class eventPlatform {
+public:
+	virtual uint64_t getTimestamp() = 0;
+	virtual void eventLock()		= 0;
+	virtual void eventUnlock()		= 0;
+};
+
 class eventCollector {
 	struct Impl;
 	static constexpr size_t ImplSize = 48;
 	alignas( std::max_align_t ) std::array<std::byte, ImplSize> storage;
 
 	Impl *impl;
+
+	eventPlatform *pltf;
 
 	eventPacket *currPkt;
 	eventPacket *sendPkt;
@@ -44,4 +53,5 @@ public:
 	void sendPacketCompleted();
 
 	void setStreamId( uint32_t _streamId );
+	void setPlatformIntf( eventPlatform *_pltf );
 };

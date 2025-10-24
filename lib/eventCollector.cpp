@@ -21,6 +21,7 @@ eventCollector::eventCollector() {
 	discardEventCount = 0;
 	pktSqnNo		  = 0;
 	streamId		  = 0;
+	pltf			  = nullptr;
 }
 
 eventPacket *eventCollector::getCurrentPacket() {
@@ -56,13 +57,18 @@ eventCollector *eventCollector::getInstance() noexcept {
 
 void eventCollector::sendEvent( EventIntf *evt ) {
 	eventPacket *curr = getCurrentPacket();
+	uint64_t _ts	  = 0;
 
 	if ( curr == nullptr ) {
 		discardEventCount++;
 		return;
 	}
 
+	pltf->eventLock();
+	_ts = pltf->getTimestamp();
+	evt->setTimestamp( _ts );
 	curr->addEvent( evt );
+	pltf->eventUnlock();
 
 	if ( curr->isPacketFull() ) {
 		curr->buildPacket();
@@ -94,4 +100,10 @@ void eventCollector::setStreamId( uint32_t _streamId ) {
 	assert( streamId == 0 );
 
 	streamId = _streamId;
+}
+
+void eventCollector::setPlatformIntf( eventPlatform *_pltf ) {
+	assert( pltf == nullptr );
+
+	pltf = _pltf;
 }
