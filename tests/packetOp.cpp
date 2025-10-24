@@ -11,6 +11,8 @@ public:
 		std::fill( m_data.begin(), m_data.end(), static_cast<std::byte>( fill_value ) );
 	}
 
+	void setTimestamp( uint64_t ts ) { (void)ts; }
+
 	std::span<const std::byte> getEventInRaw() override { return m_data; }
 };
 
