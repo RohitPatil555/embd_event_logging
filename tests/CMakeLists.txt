@@ -59,5 +59,6 @@ collect_gtest_names(TEST_LIST ${TESTS_SRCS})
 
 message(STATUS "All collected tests: ${TEST_LIST}")
 foreach(test_name ${TEST_LIST})
-    add_test(NAME ${test_name} COMMAND tests --gtest_filter=${test_name})
+    string(STRIP "${test_name}" test_name_stripped)
+    add_test(NAME ${test_name} COMMAND tests --gtest_filter=${test_name_stripped})
 endforeach(test_name ${TEST_LIST})

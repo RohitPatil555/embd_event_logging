@@ -3,6 +3,8 @@
 #include <event.hpp>
 #include <internal/eventPacket.hpp>
 
+#define CONVERT_SIZE_IN_BITS( x ) ( ( x ) * 8 )
+
 class MockEvent : public EventIntf {
 	std::vector<std::byte> m_data;
 
@@ -39,8 +41,8 @@ TEST_F( EventPacketTest, Initialization ) {
 	EXPECT_EQ( pktBuf->events_discarded, 0 );
 	EXPECT_EQ( pktBuf->packet_seq_count, TEST_SEQ_NO );
 
-	EXPECT_EQ( pktBuf->content_size, ( sizeof( uint32_t ) * 5 ) );
-	EXPECT_EQ( pktBuf->packet_size, sizeof( packet_buffer_t ) );
+	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( uint32_t ) * 5 ) );
+	EXPECT_EQ( pktBuf->packet_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
 }
 
 TEST_F( EventPacketTest, CapacityManagement ) {
@@ -64,8 +66,8 @@ TEST_F( EventPacketTest, CapacityManagement ) {
 	EXPECT_EQ( pktBuf->events_discarded, 0 );
 	EXPECT_EQ( pktBuf->packet_seq_count, TEST_SEQ_NO );
 
-	EXPECT_EQ( pktBuf->content_size, sizeof( packet_buffer_t ) );
-	EXPECT_EQ( pktBuf->packet_size, sizeof( packet_buffer_t ) );
+	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
+	EXPECT_EQ( pktBuf->packet_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
 }
 
 
@@ -92,8 +94,8 @@ TEST_F( EventPacketTest, PaddingValidation ) {
 	EXPECT_EQ( pktBuf->events_discarded, 0 );
 	EXPECT_EQ( pktBuf->packet_seq_count, TEST_SEQ_NO );
 
-	EXPECT_EQ( pktBuf->content_size, ( sizeof( packet_buffer_t ) - padSize ) );
-	EXPECT_EQ( pktBuf->packet_size, sizeof( packet_buffer_t ) );
+	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) - padSize ) );
+	EXPECT_EQ( pktBuf->packet_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
 }
 
 TEST_F( EventPacketTest, DropEventValidation ) {
@@ -115,6 +117,6 @@ TEST_F( EventPacketTest, DropEventValidation ) {
 	EXPECT_EQ( pktBuf->events_discarded, TEST_EVENT_DROP_COUNT );
 	EXPECT_EQ( pktBuf->packet_seq_count, TEST_SEQ_NO );
 
-	EXPECT_EQ( pktBuf->content_size, ( sizeof( uint32_t ) * 5 ) );
-	EXPECT_EQ( pktBuf->packet_size, sizeof( packet_buffer_t ) );
+	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( uint32_t ) * 5 ) );
+	EXPECT_EQ( pktBuf->packet_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
 }

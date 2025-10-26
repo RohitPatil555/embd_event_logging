@@ -29,23 +29,32 @@ public:
 };
 
 static TestPlatform g_TestPltf;
+bool g_isInitialized = false;
+
+class EventCollectorTest : public ::testing::Test {
+protected:
+	void SetUp() override {
+		if ( !g_isInitialized ) {
+			auto *inst3 = eventCollector::getInstance();
+			inst3->setStreamId( 0 );
+			inst3->setPlatformIntf( &g_TestPltf );
+			g_isInitialized = true;
+		}
+	}
+};
 
 // Test: Verify singleton instance
-TEST( EventCollectorTest, SingletonInstance ) {
+TEST_F( EventCollectorTest, SingletonInstance ) {
 	auto *inst1 = eventCollector::getInstance();
 	auto *inst2 = eventCollector::getInstance();
 	EXPECT_EQ( inst1, inst2 );
 
 	// TODO: need to see what to do for UT
-	auto *inst3 = eventCollector::getInstance();
-	inst3->setStreamId( 0 );
-	inst3->setPlatformIntf( &g_TestPltf );
 }
 
 // Test: Push events and send first packet
-TEST( EventCollectorTest, PushAndSendFirstPacket ) {
+TEST_F( EventCollectorTest, PushAndSendFirstPacket ) {
 	auto *collector = eventCollector::getInstance();
-	collector->setStreamId( 100 );
 
 	// Create mock events
 	auto evt			= new Event<mock_event_t>;
@@ -69,18 +78,16 @@ TEST( EventCollectorTest, PushAndSendFirstPacket ) {
 }
 
 // Test: Handle empty send queue
-TEST( EventCollectorTest, EmptySendQueue ) {
+TEST_F( EventCollectorTest, EmptySendQueue ) {
 	auto *collector = eventCollector::getInstance();
-	collector->setStreamId( 42 ); // Arbitrary stream ID
 
 	auto sendPacket = collector->getSendPacket();
 	EXPECT_FALSE( sendPacket.has_value() );
 }
 
 // Test: Sequential packet sending with completion
-TEST( EventCollectorTest, SequentialPackets ) {
+TEST_F( EventCollectorTest, SequentialPackets ) {
 	auto *collector = eventCollector::getInstance();
-	collector->setStreamId( 200 );
 
 	// Create mock events
 	auto evt1			 = new Event<mock_event_t>;
@@ -120,7 +127,7 @@ TEST( EventCollectorTest, SequentialPackets ) {
 	vector<byte> data2( span2.value().data(), span2.value().data() + span2.value().size() );
 
 	// Ensure spans are for different packet. Skip 20 byte header size.
-	for ( size_t i = 20; i < 10; i++ ) {
+	for ( size_t i = 32; i < ( 32 + 10 ); i++ ) {
 		EXPECT_NE( data1[ i ], data2[ i ] );
 	}
 }
