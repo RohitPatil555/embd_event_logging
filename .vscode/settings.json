@@ -67,6 +67,7 @@
         "bitset": "cpp",
         "cstring": "cpp",
         "span": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "metadata": "c"
     }
 }

@@ -37,3 +37,5 @@ if [ "$COPY_ARTIFACTS" = "true" ]; then
 fi
 
 cd $EXEC_DIR
+
+./example/build_example.sh

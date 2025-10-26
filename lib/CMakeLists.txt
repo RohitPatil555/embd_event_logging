@@ -3,8 +3,11 @@ add_library(embdEventLog STATIC)
 
 target_include_directories(embdEventLog PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../tmpl>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../genHdr>
+)
+
+target_include_directories(embdEventLog PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../tmpl>
     $<INSTALL_INTERFACE:include>
 )
 

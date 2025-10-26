@@ -2,6 +2,7 @@
 import sys
 import os
 import yaml
+import textwrap
 from jinja2 import Template
 
 _supported_type_list = ["uint8_t", "uint16_t", "uint32_t", "int8_t", "int16_t", "int32_t"]
@@ -46,7 +47,8 @@ class CppHeaderFile(GenerateFile):
         #define EVENT_STREAM_ID  {{ stream_id }}
 
         """
-        super().add_header(c_code_tmpl)
+        clean_template = textwrap.dedent(c_code_tmpl)
+        super().add_header(clean_template)
 
     def addEvent(self, event):
         c_code_tmpl = """
@@ -61,7 +63,8 @@ class CppHeaderFile(GenerateFile):
             static constexpr uint32_t value = {{ evt.id }};
         };
         """
-        super().add_event(c_code_tmpl, event)
+        clean_template = textwrap.dedent(c_code_tmpl)
+        super().add_event(clean_template, event)
 
 
 class BabeltraceMetadata(GenerateFile):
@@ -70,9 +73,10 @@ class BabeltraceMetadata(GenerateFile):
         self._create()
 
     def _create(self):
-        bb_config_hdr = """
+        bb_config_hdr = """\
         /* CTF 1.8 */
 
+        typedef integer { size = 64; align = 8; signed = false; } uint64_t;
         typedef integer { size = 32; align = 8; signed = false; } uint32_t;
         typedef integer { size = 16; align = 8; signed = false; } uint16_t;
         typedef integer { size = 8; align = 8; signed = false; }  uint8_t;
@@ -109,18 +113,20 @@ class BabeltraceMetadata(GenerateFile):
 
              event.header := struct {
                  uint32_t id;
+                 uint64_t timestamp;
              };
         };
 
         """
-        super().add_header(bb_config_hdr)
+        clean_template = textwrap.dedent(bb_config_hdr)
+        super().add_header(clean_template)
 
     def addEvent(self, event):
         bb_config_event = """
         event {
-            name = {{ evt.name }}
-            id   = {{ evt.id }}
-            stream_id = {{ stream_id }}
+            name = {{ evt.name }};
+            id   = {{ evt.id }};
+            stream_id = {{ stream_id }};
 
             fields := struct {
                 {%- for f in evt.params %}
@@ -130,7 +136,8 @@ class BabeltraceMetadata(GenerateFile):
         };
 
         """
-        super().add_event(bb_config_event, event)
+        clean_template = textwrap.dedent(bb_config_event)
+        super().add_event(clean_template, event)
 
 def parse_yaml_file(file_path):
     """

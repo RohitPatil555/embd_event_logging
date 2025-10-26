@@ -1,0 +1,6 @@
+- events:
+  - name: loopCount
+    id: 1
+    params:
+      - name: count
+        type: uint8_t

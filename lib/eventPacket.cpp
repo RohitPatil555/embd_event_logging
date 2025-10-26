@@ -42,8 +42,8 @@ void eventPacket::buildPacket() {
 	size_t hdrSize = 0;
 
 	hdrSize				= sizeof( buffer ) - buffer.eventPayload.size();
-	buffer.packet_size	= sizeof( buffer );
-	buffer.content_size = hdrSize + currOffset;
+	buffer.packet_size	= sizeof( buffer ) * 8;			// convert to bit
+	buffer.content_size = ( hdrSize + currOffset ) * 8; // convert to bit
 }
 
 span<const byte> eventPacket::getPacketInRaw() { return as_bytes( span( &buffer, 1 ) ); }

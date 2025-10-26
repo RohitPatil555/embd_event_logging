@@ -13,23 +13,26 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # useful for clangd / other tools
 set(USER_CONFIG_FILE "" CACHE FILEPATH "Path to user configuration file")
 
 # Enable address & undefined sanitizer on build type Debug
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(SANITIZERS "-fsanitize=address,undefined" CACHE STRING "")
-else()
-    set(SANITIZERS "" CACHE STRING "")
-endif()
+if (PROJECT_IS_TOP_LEVEL)
 
-add_compile_options(
-    ${SANITIZERS}
-    -Wall -Wextra -pedantic
-)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(SANITIZERS "-fsanitize=address,undefined" CACHE STRING "")
+    else()
+        set(SANITIZERS "" CACHE STRING "")
+    endif()
 
-# Code coverage (only on GCC/Clang)
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    option(ENABLE_COVERAGE "Enable coverage flags" ON)
-    if(ENABLE_COVERAGE AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_compile_options(--coverage -O0)
-        link_libraries(gcov)
+    add_compile_options(
+        ${SANITIZERS}
+        -Wall -Wextra -pedantic
+    )
+
+    # Code coverage (only on GCC/Clang)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        option(ENABLE_COVERAGE "Enable coverage flags" ON)
+        if(ENABLE_COVERAGE AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+            add_compile_options(--coverage -O0)
+            link_libraries(gcov)
+        endif()
     endif()
 endif()
 
@@ -59,8 +62,11 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/config.hpp.in
 # Sub‑projects
 # ------------------------------------------------------------
 add_subdirectory(lib)          # library
-add_subdirectory(tests)        # unit tests
-add_subdirectory(docs)         # MkDocs
+
+if (PROJECT_IS_TOP_LEVEL)
+    add_subdirectory(tests)        # unit tests
+    add_subdirectory(docs)         # MkDocs
+endif ()
 
 # ------------------------------------------------------------
 # Install rules (optional)
