@@ -11,8 +11,6 @@ theme:
     - c++
 nav:
   - Home: index.md
-  - Internal:
-    - Intro: internal/index.md
-    - Host To Device Interface: internal/host_to_device_interface.md
+  - Quick Start: quick_start_guide.md
   - Other:
     - Requirement: static-reqs\/index.html

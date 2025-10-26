@@ -42,6 +42,7 @@ bool dumpFile( string_view filePath ) {
 	if ( pkt.has_value() ) {
 		auto data = pkt.value();
 		ofs.write( reinterpret_cast<const char *>( data.data() ), data.size() );
+		inst->sendPacketCompleted();
 	} else {
 		cerr << "fail to get event packet" << endl;
 		return false;
