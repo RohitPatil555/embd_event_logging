@@ -30,9 +30,10 @@ jobs:
         mkdir -p artifacts
         chmod -R 666 artifacts
         docker run --rm -v $PWD/artifacts:/workspaces/artifacts \
-            -v ${{ github.workspace }}:/workspaces/${env.PROJECT_NAME} \
+            -v ${{ github.workspace }}:/workspaces \
             -e GITHUB_ACTIONS=true \
-            evt_capture_lib:$(git rev-parse --short=8 HEAD) /workspaces/${env.PROJECT_NAME}/test_ci.sh --build-dir /tmp/build --artifacts
+            -e PROJECT_PATH=/workspaces \
+            evt_capture_lib:$(git rev-parse --short=8 HEAD) /workspaces/test_ci.sh --build-dir /tmp/build --artifacts
         sudo chmod -R 0777 artifacts/
         sudo chown -R $USER:$GROUP artifacts/
 

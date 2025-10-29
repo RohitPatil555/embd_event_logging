@@ -7,6 +7,7 @@ EXEC_DIR=$PWD
 BUILD_DIR=build
 COPY_ARTIFACTS=false
 EXAMPLE_BUILD=false
+REPO_PATH=$PWD
 
 function library_ut_test()
 {
@@ -16,7 +17,7 @@ function library_ut_test()
     cd ${BUILD_DIR}
 
     # config space
-    cmake /workspaces/embd_event_logging -DCMAKE_BUILD_TYPE=Debug
+    cmake ${REPO_PATH} -DCMAKE_BUILD_TYPE=Debug
 
     # build cmake
     cmake --build . -- -j$(nproc)
@@ -44,7 +45,7 @@ function example_build()
     cd ${BUILD_DIR}/example
 
     # config space
-    cmake /workspaces/embd_event_logging/example
+    cmake ${REPO_PATH}/example
 
     # build cmake
     cmake --build . -- -j$(nproc)
@@ -76,6 +77,7 @@ while [[ "$#" -gt 0 ]]; do
             ;;
         --artifacts)
             COPY_ARTIFACTS="true"
+            REPO_PATH=${PROJECT_PATH}
             shift 1 # Move past --artifacts
             ;;
         -h|--help)
