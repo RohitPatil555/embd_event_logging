@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 # cmake/auto_version.cmake
 find_package(Git QUIET)
 if(GIT_FOUND)

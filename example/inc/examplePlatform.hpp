@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT | Author: Rohit Patil
 
 #include <event.hpp>
 #include <eventCollector.hpp>

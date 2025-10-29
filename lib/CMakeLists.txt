@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 # src/CMakeLists.txt
 add_library(embdEventLog STATIC)
 

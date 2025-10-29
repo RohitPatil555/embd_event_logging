@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 # Add this in root CMakeLists.txt or a dedicated folder
 
 add_executable(embdEventLog_fuzz fuzz.cpp)   # your fuzzer harness

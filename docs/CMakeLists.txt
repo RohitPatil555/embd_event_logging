@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 find_program(DOORSTOP_EXECUTABLE doorstop
     REQUIRED

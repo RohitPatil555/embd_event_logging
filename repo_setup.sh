@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 #!/bin/bash
 
 # remove all unwanted hook and force to use pre-commit hook

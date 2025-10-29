@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 # tests/CMakeLists.txt
 enable_testing()
 

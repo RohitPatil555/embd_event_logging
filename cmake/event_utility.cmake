@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(INPUT_YAML "${EVENT_DESCRIPTION_FILE}")

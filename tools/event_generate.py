@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT | Author: Rohit Patil
 #!/usr/bin/env python3
 import sys
 import os
