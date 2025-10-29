@@ -1,8 +1,38 @@
 #pragma once
 
+/*********************************************************************
+ *  Configuration Header – Event / Packet Limits
+ *
+ *  The following macros control the size and capacity of the event
+ *  collection system. They are intentionally kept in a separate header
+ *  to make it easy to tune the system for different hardware or
+ *  application requirements.
+ *********************************************************************/
+
+ /* --------------------------------------------------------------------
+ *  Maximum number of events that can be stored inside one packet.
+ * -------------------------------------------------------------------- */
 #define CONFIG_EVENT_MAX_PER_PACKET     @MAX_EVENT_PER_PACKET@
+
+/* --------------------------------------------------------------------
+ *  Maximum size of an individual event payload (in bytes).
+ * -------------------------------------------------------------------- */
 #define CONFIG_EVENT_SIZE_MAX           @MAX_EVENT_SIZE@
+
+/* --------------------------------------------------------------------
+ *  Maximum number of packets that can exist simultaneously.
+ * -------------------------------------------------------------------- */
 #define CONFIG_PACKET_COUNT_MAX         @MAX_PACKETS@
 
-// derived macro
+/* --------------------------------------------------------------------------
+ *  Derived constant
+ * -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------
+ *  It is simply the product of the two limits above.  The value
+ *  represents the maximum number of bytes that can be consumed by
+ *  event data in a single packet (excluding headers, timestamps,
+ *  etc.).  This macro is handy when allocating buffers or performing
+ *  bounds‑checks.
+ * -------------------------------------------------------------------- */
 #define EVENT_MAX_PAYLOAD_IN_BYTES   (CONFIG_EVENT_SIZE_MAX * CONFIG_EVENT_MAX_PER_PACKET)
