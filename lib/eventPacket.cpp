@@ -22,13 +22,14 @@ eventPacket::~eventPacket() { memset( &buffer, 0, sizeof( buffer ) ); }
  * populated.  The payload area is cleared to ensure no leftover data
  * from a previous use contaminates the new packet.
  * -------------------------------------------------------------------- */
-void eventPacket::init( uint32_t streamId, uint32_t seqNo ) {
+void eventPacket::init( uint32_t streamId, uint32_t seqNo, uint64_t ts ) {
 	currOffset = 0;
 	eventCount = 0;
 
 	memset( &buffer, 0, sizeof( buffer ) );
 	buffer.stream_id		= streamId;
 	buffer.packet_seq_count = seqNo;
+	buffer.begining_cs		= ts;
 }
 
 /* --------------------------------------------------------------------
@@ -77,12 +78,13 @@ bool eventPacket::addEvent( EventIntf *eventPtr ) {
  * and the content size (header + payload, in bits).
  * -------------------------------------------------------------------- */
 
-void eventPacket::buildPacket() {
+void eventPacket::buildPacket( uint64_t ts ) {
 	size_t hdrSize = 0;
 
 	hdrSize				= sizeof( buffer ) - buffer.eventPayload.size();
 	buffer.packet_size	= sizeof( buffer ) * 8;			// convert to bit
 	buffer.content_size = ( hdrSize + currOffset ) * 8; // convert to bit
+	buffer.end_cs		= ts;
 }
 
 /* --------------------------------------------------------------------

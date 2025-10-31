@@ -10,9 +10,12 @@
 
 class TestPlatform : public eventPlatform {
 	std::mutex eventMutex;
+	std::mutex packetMutex;
 
 public:
 	uint64_t getTimestamp();
-	void eventLock();
+	bool eventTryLock();
 	void eventUnlock();
+	void packetLock();
+	void packetUnlock();
 };

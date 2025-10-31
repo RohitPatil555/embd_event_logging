@@ -65,9 +65,15 @@ eventCollector::eventCollector() {
  *  and reset the discard counter.
  * -------------------------------------------------------------------- */
 eventPacket *eventCollector::getCurrentPacket() {
+	uint64_t ts = 0;
+
 	if ( currPkt == nullptr ) {
+		pltf->packetLock();
 		currPkt = pktPool.allocate();
-		currPkt->init( streamId, pktSqnNo );
+		pltf->packetUnlock();
+
+		ts = pltf->getTimestamp();
+		currPkt->init( streamId, pktSqnNo, ts );
 		discardEventCount = 0;
 		pktSqnNo++;
 	}
@@ -87,6 +93,8 @@ void eventCollector::sendPacket() {
 	bool qstatus = false;
 	// this must not be null in this path as per design.
 	assert( currPkt != nullptr );
+
+	pltf->packetLock();
 	qstatus = impl->queue.insert( currPkt );
 
 	// As queue size and packet buffer have same count it
@@ -94,6 +102,7 @@ void eventCollector::sendPacket() {
 	assert( qstatus );
 
 	currPkt = nullptr;
+	pltf->packetUnlock();
 }
 
 /* --------------------------------------------------------------------
@@ -126,14 +135,19 @@ void eventCollector::sendEvent( EventIntf *evt ) {
 		return;
 	}
 
-	pltf->eventLock();
+	if ( !pltf->eventTryLock() ) {
+		curr->dropEvent();
+		return;
+	}
+
 	_ts = pltf->getTimestamp();
 	evt->setTimestamp( _ts );
 	curr->addEvent( evt );
 	pltf->eventUnlock();
 
 	if ( curr->isPacketFull() ) {
-		curr->buildPacket();
+		_ts = pltf->getTimestamp();
+		curr->buildPacket( _ts );
 		sendPacket();
 	}
 }
@@ -145,7 +159,10 @@ void eventCollector::sendEvent( EventIntf *evt ) {
  * -------------------------------------------------------------------- */
 void eventCollector::sendPacketCompleted() {
 	if ( sendPkt != nullptr ) {
+		pltf->packetLock();
 		pktPool.release( sendPkt );
+		pltf->packetUnlock();
+
 		sendPkt = nullptr;
 	}
 }
@@ -159,7 +176,12 @@ void eventCollector::sendPacketCompleted() {
  * -------------------------------------------------------------------- */
 std::optional<std::span<const std::byte>> eventCollector::getSendPacket() {
 	if ( sendPkt == nullptr ) {
+		pltf->packetLock();
+
 		auto pkt = impl->queue.remove();
+
+		pltf->packetUnlock();
+
 		if ( !pkt.has_value() ) {
 			return std::nullopt;
 		}

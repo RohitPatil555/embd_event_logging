@@ -24,6 +24,8 @@
  * -------------------------------------------------------------------------- */
 typedef struct {
 	uint32_t stream_id;		   // ID of the originating stream
+	uint64_t begining_cs;	   // Begining timestamp
+	uint64_t end_cs;		   // End timestamp
 	uint32_t events_discarded; // how many events were dropped before adding to this packet
 	uint32_t packet_size;	   // total size of the packet in bytes (header + payload)
 	uint32_t content_size;	   // size of the event payload only
@@ -53,7 +55,7 @@ public:
 	~eventPacket();
 
 	/* Initialise a new packet with a stream identifier and a sequence number. */
-	void init( uint32_t streamId, uint32_t seqNo );
+	void init( uint32_t streamId, uint32_t seqNo, uint64_t ts );
 
 	/* Return true if adding another event would overflow the payload array. */
 	bool isPacketFull();
@@ -68,7 +70,7 @@ public:
 	std::span<const std::byte> getPacketInRaw();
 
 	/* Finalise the packet: compute sizes, set sequence numbers, etc. */
-	void buildPacket();
+	void buildPacket( uint64_t ts );
 };
 
 /* --------------------------------------------------------------------------

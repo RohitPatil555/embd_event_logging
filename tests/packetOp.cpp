@@ -31,8 +31,8 @@ TEST_F( EventPacketTest, Initialization ) {
 	eventPacket packet;
 	const packet_buffer_t *pktBuf = nullptr;
 
-	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
-	packet.buildPacket();
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO, 0ULL );
+	packet.buildPacket( 0ULL );
 
 	auto raw = packet.getPacketInRaw();
 	pktBuf	 = reinterpret_cast<const packet_buffer_t *>( raw.data() );
@@ -41,7 +41,7 @@ TEST_F( EventPacketTest, Initialization ) {
 	EXPECT_EQ( pktBuf->events_discarded, 0 );
 	EXPECT_EQ( pktBuf->packet_seq_count, TEST_SEQ_NO );
 
-	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( uint32_t ) * 5 ) );
+	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( uint32_t ) * 9 ) );
 	EXPECT_EQ( pktBuf->packet_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
 }
 
@@ -50,14 +50,14 @@ TEST_F( EventPacketTest, CapacityManagement ) {
 	const packet_buffer_t *pktBuf = nullptr;
 	MockEvent mevt( TEST_EVENT_MAX_SIZE, 0x11 );
 
-	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO, 0ULL );
 
 	// Push event till packet is full.
 	while ( !packet.isPacketFull() ) {
 		packet.addEvent( &mevt );
 	}
 
-	packet.buildPacket();
+	packet.buildPacket( 0ULL );
 
 	auto raw = packet.getPacketInRaw();
 	pktBuf	 = reinterpret_cast<const packet_buffer_t *>( raw.data() );
@@ -78,14 +78,14 @@ TEST_F( EventPacketTest, PaddingValidation ) {
 	const uint32_t padSize =
 		( TEST_EVENT_MAX_SIZE - TEST_EVENT_PADDING_SIZE_1 ) * CONFIG_EVENT_MAX_PER_PACKET;
 
-	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO, 0ULL );
 
 	// Push event till packet is full.
 	while ( !packet.isPacketFull() ) {
 		packet.addEvent( &mevt );
 	}
 
-	packet.buildPacket();
+	packet.buildPacket( 0ULL );
 
 	auto raw = packet.getPacketInRaw();
 	pktBuf	 = reinterpret_cast<const packet_buffer_t *>( raw.data() );
@@ -102,13 +102,13 @@ TEST_F( EventPacketTest, DropEventValidation ) {
 	eventPacket packet;
 	const packet_buffer_t *pktBuf = nullptr;
 
-	packet.init( TEST_STREAM_ID, TEST_SEQ_NO );
+	packet.init( TEST_STREAM_ID, TEST_SEQ_NO, 0ULL );
 
 	for ( uint32_t i = 0; i < TEST_EVENT_DROP_COUNT; i++ ) {
 		packet.dropEvent();
 	}
 
-	packet.buildPacket();
+	packet.buildPacket( 0ULL );
 
 	auto raw = packet.getPacketInRaw();
 	pktBuf	 = reinterpret_cast<const packet_buffer_t *>( raw.data() );
@@ -117,6 +117,6 @@ TEST_F( EventPacketTest, DropEventValidation ) {
 	EXPECT_EQ( pktBuf->events_discarded, TEST_EVENT_DROP_COUNT );
 	EXPECT_EQ( pktBuf->packet_seq_count, TEST_SEQ_NO );
 
-	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( uint32_t ) * 5 ) );
+	EXPECT_EQ( pktBuf->content_size, CONVERT_SIZE_IN_BITS( sizeof( uint32_t ) * 9 ) );
 	EXPECT_EQ( pktBuf->packet_size, CONVERT_SIZE_IN_BITS( sizeof( packet_buffer_t ) ) );
 }

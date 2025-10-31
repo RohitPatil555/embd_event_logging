@@ -24,8 +24,11 @@ public:
 		return ts;
 	}
 
-	void eventLock() {}
+	bool eventTryLock() { return true; }
 	void eventUnlock() {}
+
+	void packetLock() {}
+	void packetUnlock() {}
 };
 
 static TestPlatform g_TestPltf;
@@ -127,7 +130,7 @@ TEST_F( EventCollectorTest, SequentialPackets ) {
 	vector<byte> data2( span2.value().data(), span2.value().data() + span2.value().size() );
 
 	// Ensure spans are for different packet. Skip 20 byte header size.
-	for ( size_t i = 32; i < ( 32 + 10 ); i++ ) {
+	for ( size_t i = 48; i < ( 48 + 10 ); i++ ) {
 		EXPECT_NE( data1[ i ], data2[ i ] );
 	}
 }

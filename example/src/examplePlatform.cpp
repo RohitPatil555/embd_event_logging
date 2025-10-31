@@ -11,6 +11,10 @@ uint64_t TestPlatform::getTimestamp() {
 		duration_cast<nanoseconds>( system_clock::now().time_since_epoch() ).count() );
 }
 
-void TestPlatform::eventLock() { eventMutex.lock(); }
+bool TestPlatform::eventTryLock() { return eventMutex.try_lock(); }
 
 void TestPlatform::eventUnlock() { eventMutex.unlock(); }
+
+void TestPlatform::packetLock() { packetMutex.lock(); }
+
+void TestPlatform::packetUnlock() { packetMutex.unlock(); }

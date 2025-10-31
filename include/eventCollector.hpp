@@ -32,11 +32,18 @@ public:
 	/* Return a monotonically increasing timestamp (nanoseconds is common). */
 	virtual uint64_t getTimestamp() = 0;
 
-	/* Acquire an exclusive lock before mutating shared state. */
-	virtual void eventLock() = 0;
+	/* Try an acquire an exclusive lock before mutating shared state.
+	 * Return : True if success and False if fail to get within timeout */
+	virtual bool eventTryLock() = 0;
 
 	/* Release the lock after mutation is finished. */
 	virtual void eventUnlock() = 0;
+
+	/* Acquire an exclusive lock for packet collection and send */
+	virtual void packetLock() = 0;
+
+	/* Release the lock for packet after mutation is finished. */
+	virtual void packetUnlock() = 0;
 };
 
 /* --------------------------------------------------------------------------

@@ -149,6 +149,8 @@ class BabeltraceMetadata(GenerateFile):
              id = {{ stream_id }};
 
              packet.context := struct {
+                 uint64_t begining_cs;
+                 uint64_t end_cs;
                  uint32_t events_discarded;
                  uint32_t packet_size;
                  uint32_t content_size;
