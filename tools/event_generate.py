@@ -41,7 +41,6 @@ class GenerateFile:
         inputs = {}
         inputs["stream_id"] = self.stream_id
         inputs["evt"] = event
-        print(inputs)
         template = Template(tmpl_str)
         with open(self.outfile, 'a') as f:
             out_str = template.render(**inputs)
@@ -87,7 +86,11 @@ class CppHeaderFile(GenerateFile):
         c_code_tmpl = """
         typedef struct {
             {%- for f in evt.params %}
+            {%- if f.count is defined %}
+            {{ f.type }} {{ f.name }}[{{ f.count }}];
+            {%- else %}
             {{ f.type }} {{ f.name }};
+            {%- endif %}
             {%- endfor %}
         } __attribute__((packed)) {{ evt.name }}_t;
 
@@ -149,8 +152,8 @@ class BabeltraceMetadata(GenerateFile):
              id = {{ stream_id }};
 
              packet.context := struct {
-                 uint64_t begining_cs;
-                 uint64_t end_cs;
+                 uint64_t timestamp_begin;
+                 uint64_t timestamp_end;
                  uint32_t events_discarded;
                  uint32_t packet_size;
                  uint32_t content_size;
@@ -183,7 +186,11 @@ class BabeltraceMetadata(GenerateFile):
 
             fields := struct {
                 {%- for f in evt.params %}
+                {%- if f.count is defined %}
+                {{ f.type }} {{ f.name }}[{{ f.count }}];
+                {%- else %}
                 {{ f.type }} {{ f.name }};
+                {%- endif %}
                 {%- endfor %}
             };
         };
@@ -232,11 +239,19 @@ def check_argument(event):
         t = p['type']
         n = p['name']
         if not isinstance(n, str):
-            print(f"group:{gName} event:{event_name} parameter not have name in string format {n}")
+            print(f"group:{gName} event:{event_name} parameter name is not as type string {n}")
             sys.exit(-1)
         if not isinstance(t, str):
-            print(f"group:{gName} event:{event_name} parameter {n} not have type in string format {t}")
+            print(f"group:{gName} event:{event_name} parameter {n}: type is not in string {t}")
             sys.exit(-1)
+        if 'count' in p:
+            c = p['count']
+            if not isinstance(c, int):
+                print(f"group:{gName} event:{event_name} parameter {n}: count don't have type integer {c}")
+                sys.exit(-1)
+            if c <= 0:
+                print(f"group:{gName} event:{event_name} parameter {n} count not allow as negative or zero {c}")
+                sys.exit(-1)
         if t not in _supported_type_list:
             print(f"group:{gName} event:{event_name} have unsupported type {t}")
             sys.exit(-1)

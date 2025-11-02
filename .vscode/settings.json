@@ -68,6 +68,10 @@
         "cstring": "cpp",
         "span": "cpp",
         "cassert": "cpp",
-        "metadata": "c"
+        "metadata": "c",
+        "format": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "fstream": "cpp"
     }
 }

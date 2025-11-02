@@ -142,6 +142,13 @@ public:
 	std::optional<std::span<const std::byte>> getSendPacket();
 	void sendPacketCompleted(); // Notify that the platform has finished sending `sendPkt`
 
+	/* --------------------------------------------------------------------
+	 *  If system stuck and not generating enough event to push packet for send.
+	 *  In such scenario, call this API, this will force current packet to send
+	 *  all collected event.
+	 * -------------------------------------------------------------------- */
+	void forceSync( void );
+
 	/* ----------------------------------------------------------------------
 	 *  Configuration helpers
 	 *

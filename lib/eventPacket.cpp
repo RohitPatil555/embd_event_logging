@@ -29,7 +29,7 @@ void eventPacket::init( uint32_t streamId, uint32_t seqNo, uint64_t ts ) {
 	memset( &buffer, 0, sizeof( buffer ) );
 	buffer.stream_id		= streamId;
 	buffer.packet_seq_count = seqNo;
-	buffer.begining_cs		= ts;
+	buffer.timestamp_begin	= ts;
 }
 
 /* --------------------------------------------------------------------
@@ -81,10 +81,10 @@ bool eventPacket::addEvent( EventIntf *eventPtr ) {
 void eventPacket::buildPacket( uint64_t ts ) {
 	size_t hdrSize = 0;
 
-	hdrSize				= sizeof( buffer ) - buffer.eventPayload.size();
-	buffer.packet_size	= sizeof( buffer ) * 8;			// convert to bit
-	buffer.content_size = ( hdrSize + currOffset ) * 8; // convert to bit
-	buffer.end_cs		= ts;
+	hdrSize				 = sizeof( buffer ) - buffer.eventPayload.size();
+	buffer.packet_size	 = sizeof( buffer ) * 8;		 // convert to bit
+	buffer.content_size	 = ( hdrSize + currOffset ) * 8; // convert to bit
+	buffer.timestamp_end = ts;
 }
 
 /* --------------------------------------------------------------------

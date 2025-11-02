@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------- */
 typedef struct {
 	uint32_t stream_id;		   // ID of the originating stream
-	uint64_t begining_cs;	   // Begining timestamp
-	uint64_t end_cs;		   // End timestamp
+	uint64_t timestamp_begin;  // Begining timestamp
+	uint64_t timestamp_end;	   // End timestamp
 	uint32_t events_discarded; // how many events were dropped before adding to this packet
 	uint32_t packet_size;	   // total size of the packet in bytes (header + payload)
 	uint32_t content_size;	   // size of the event payload only

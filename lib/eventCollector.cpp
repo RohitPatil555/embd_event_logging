@@ -168,6 +168,26 @@ void eventCollector::sendPacketCompleted() {
 }
 
 /* --------------------------------------------------------------------
+ *  If system stuck and not generating enough event to push packet for send.
+ *  In such scenario, call this API, this will force current packet to send
+ *  all collected event.
+ * -------------------------------------------------------------------- */
+void eventCollector::forceSync( void ) {
+	if ( currPkt == nullptr ) {
+		// No packet to flush hence return early.
+		return;
+	}
+
+	uint64_t _ts	  = 0;
+	eventPacket *curr = getCurrentPacket();
+
+	_ts = pltf->getTimestamp();
+	curr->buildPacket( _ts );
+
+	sendPacket();
+}
+
+/* --------------------------------------------------------------------
  *  Retrieve a ready‑to‑send packet for transmission.
  *
  *  If no packet is currently cached, pull one from the queue.  The

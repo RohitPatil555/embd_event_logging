@@ -4,3 +4,9 @@
     params:
       - name: count
         type: uint8_t
+  - name: elementList
+    id: 2
+    params:
+      - name: nums
+        type: uint8_t
+        count: 4
