@@ -17,6 +17,7 @@ set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/linker.ld)
 
 add_executable(${PROJECT_NAME}.elf
     src/main.cpp
+    src/scheduler.cpp
 )
 
 target_sources(${PROJECT_NAME}.elf PRIVATE

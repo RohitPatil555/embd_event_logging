@@ -1,6 +1,8 @@
 #include <coroutine>
 #include <taskPool.hpp>
 
+#pragma once
+
 struct Task {
 	struct promise_type {
 		static TaskPool *poolPtr;
@@ -43,6 +45,14 @@ struct Task {
 				handle.resume();
 			}
 		}
+	}
+
+	bool is_completed() {
+		if ( handle.done() ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	static void set_task_pool( TaskPool *ptr ) { promise_type::poolPtr = ptr; }

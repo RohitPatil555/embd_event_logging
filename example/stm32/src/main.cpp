@@ -1,10 +1,9 @@
 #include <compiler_req_apis.h>
 #include <cstdint>
+#include <scheduler.hpp>
 #include <string.h>
 #include <task.hpp>
 
-#define MAX_NUMBER_OF_TASK 3
-#define MAX_TASK_FRAME_SIZE 128
 #define TOTAL_TASK_FRAME_SIZE 512
 
 using namespace std;
@@ -13,7 +12,8 @@ TaskPool *Task::promise_type::poolPtr = nullptr;
 alignas( uint32_t ) static uint8_t raw_memory_frame_pool[ TOTAL_TASK_FRAME_SIZE ];
 
 static TaskPool *getFixMemoryPool() {
-	TaskPool *ptr = new ( raw_memory_frame_pool ) FixTaskFrameAllocator<3, 128>();
+	TaskPool *ptr = new ( raw_memory_frame_pool )
+		FixTaskFrameAllocator<SCHEDULER_TASK_COUNT_MAX, SCHEDULER_TASK_FRAM_SIZE>();
 	return ptr;
 }
 
@@ -29,15 +29,20 @@ Task countLoopTask( size_t maxLoopCount ) {
 extern "C" void Reset_Handler() {
 	Task::set_task_pool( getFixMemoryPool() );
 
-	auto task = countLoopTask( 100 );
+	auto task1 = countLoopTask( 10 );
+	auto task2 = countLoopTask( 1000 );
+	auto task3 = countLoopTask( 100000 );
 
-	task.resume();
+	auto sched = scheduler();
 
-	task.resume();
+	sched.append( &task1 );
+	sched.append( &task2 );
+	sched.append( &task3 );
 
 	// Infinite loop to make cpu busy.
-	while ( 1 )
-		;
+	while ( 1 ) {
+		sched.run();
+	}
 }
 
 // Vector Table

@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <new>
 
+#pragma once
+
 class TaskPool {
 public:
 	virtual void *allocate( std::size_t size ) = 0;
