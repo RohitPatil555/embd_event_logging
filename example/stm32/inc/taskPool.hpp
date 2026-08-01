@@ -1,30 +1,46 @@
-#include <bitset>
 #include <cstddef>
 #include <cstdint>
 #include <new>
 
-// ---------------- Object Pool (std::bitset-based) ----------------
-template <std::size_t N, std::size_t FrameSize> struct TaskPool {
-	alignas( std::max_align_t ) std::uint8_t storage[ N ][ FrameSize ];
-	std::bitset<N> used; // 1 = used, 0 = free
+class TaskPool {
+public:
+	virtual void *allocate( std::size_t size ) = 0;
+	virtual void deallocate( void *ptr )	   = 0;
+};
 
-	void *allocate( std::size_t size ) {
+// ---------------- Object Pool (std::bitset-based) ----------------
+template <std::size_t N, std::size_t FrameSize> class FixTaskFrameAllocator : public TaskPool {
+	alignas( std::max_align_t ) std::uint8_t storage[ N ][ FrameSize ];
+	uint8_t used[ ( ( N / 8 ) + 1 ) ]; // 1 = used, 0 = free
+
+public:
+	virtual void *allocate( std::size_t size ) noexcept {
+		uint8_t byteOffset = 0;
+		uint8_t bitOffset  = 0;
+
 		if ( size > FrameSize )
 			return nullptr;
 
 		for ( std::size_t i = 0; i < N; ++i ) {
-			if ( !used.test( i ) ) {
-				used.set( i );
-				return storage[ i ];
+			byteOffset = (uint8_t)( i / 8 );
+			bitOffset  = (uint8_t)( i % 8 );
+			if ( !( used[ byteOffset ] & ( 1 << bitOffset ) ) ) {
+				used[ byteOffset ] |= ( 1 << bitOffset );
+				return &storage[ i ];
 			}
 		}
 		return nullptr;
 	}
 
-	void deallocate( void *ptr ) {
+	virtual void deallocate( void *ptr ) noexcept {
+		uint8_t byteOffset = 0;
+		uint8_t bitOffset  = 0;
+
 		for ( std::size_t i = 0; i < N; ++i ) {
-			if ( storage[ i ] == ptr ) {
-				used.reset( i );
+			byteOffset = (uint8_t)( i / 8 );
+			bitOffset  = (uint8_t)( i % 8 );
+			if ( &storage[ i ] == ptr ) {
+				used[ byteOffset ] &= ( ~( 1 << bitOffset ) );
 				return;
 			}
 		}
